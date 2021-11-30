@@ -52,15 +52,8 @@ int main()
 		printf("\n");
 	}
 
-	/* result set을 해제(free)해준다
+	cout << endl;
 
-	
-	mysql_free_result(result);
-
-	mysql_close(con);
-
-	exit(0);
-	*/
 
 	// 체온, 산소 포화도, 이름
 	vector<tuple<double, double, string>> Patient;
@@ -71,13 +64,22 @@ int main()
 	Patient.push_back(make_tuple(36.8, 91, "Ji Woong Kang"));
 	Patient.push_back(make_tuple(37.8, 70, "Joong ho Lee"));
 
-	// sort(Patient.begin(), Patient.end(), compare(Patient[0], Patient[1]));
+	sort(Patient.begin(), Patient.end(), sortdesc);
 
 	for (int loopP = 0; loopP < Patient.size(); loopP++)
 	{
 		cout << get<0>(Patient[loopP]) << ' ';
-
 	}
+
+	cout << endl;
+	
+	// result set을 해제(free)해준다
+
+	mysql_free_result(result);
+
+	mysql_close(con);
+
+	exit(0);
 
 }
 
@@ -102,8 +104,8 @@ bool compare(tuple<double, double, string> Pa, tuple<double, double, string> Pb)
 	}
 }
 
-void descending_sort(vector<tuple<double, double, string>>& Patient)
+bool sortdesc(const tuple<double, double, string>& P1,
+	const tuple<double, double, string>& P2)
 {
-	int tmp(0);
-
+	return (get<0>(P1) > get<0>(P2));
 }
