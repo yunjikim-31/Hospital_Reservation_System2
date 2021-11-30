@@ -52,13 +52,33 @@ int main()
 		printf("\n");
 	}
 
-	// result set을 해제(free)해준다
+	/* result set을 해제(free)해준다
 
+	
 	mysql_free_result(result);
 
 	mysql_close(con);
 
 	exit(0);
+	*/
+
+	// 체온, 산소 포화도, 이름
+	vector<tuple<double, double, string>> Patient;
+
+	Patient.push_back(make_tuple(39.2, 85.7, "Yeong Ran Lee"));
+	Patient.push_back(make_tuple(36.5, 95, "Yoo Jina"));
+	Patient.push_back(make_tuple(38, 75, "Soo Yang Kang"));
+	Patient.push_back(make_tuple(36.8, 91, "Ji Woong Kang"));
+	Patient.push_back(make_tuple(37.8, 70, "Joong ho Lee"));
+
+	// sort(Patient.begin(), Patient.end(), compare(Patient[0], Patient[1]));
+
+	for (int loopP = 0; loopP < Patient.size(); loopP++)
+	{
+		cout << get<0>(Patient[loopP]) << ' ';
+
+	}
+
 }
 
 void finish_with_error(MYSQL* con)
@@ -68,7 +88,22 @@ void finish_with_error(MYSQL* con)
 	exit(1);
 }
 
-bool compare(int temp, int oxygen)
+bool compare(tuple<double, double, string> Pa, tuple<double, double, string> Pb)
 {
-	
+	// 체온이 같을 경우
+	if (get<0>(Pa) == get<0>(Pb))
+	{
+		// 산소포화도가 높은 경우가 더 먼저 출력
+		return get<1>(Pa) > get<1>(Pb);
+	}
+	else
+	{
+		return get<1>(Pa) < get<1>(Pb);
+	}
+}
+
+void descending_sort(vector<tuple<double, double, string>>& Patient)
+{
+	int tmp(0);
+
 }

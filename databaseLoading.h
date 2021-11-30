@@ -3,8 +3,9 @@
 #include <algorithm> // sort()
 #include <vector>	 // vector
 #include <iostream>
+#include <string>
+#include <tuple>	// tuple
 using namespace std;
 
 void finish_with_error(MYSQL* con);
 
-bool compare(int temp, int oxygen);
