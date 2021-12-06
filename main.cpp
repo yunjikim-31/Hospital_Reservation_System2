@@ -1,7 +1,17 @@
 #include "databaseLoading.h"
+#include <fstream>
 
 int main()
 {
+	// 파일 쓰기
+	ofstream output("C:\\testing\\data.txt", ios::out | ios::binary);
+
+	// 파일 읽기
+	ifstream input("C:\\testing\\data.txt");
+
+	// 버퍼
+	char line[100] = {0, };	
+
 	MYSQL* con = mysql_init(NULL);
 
 	if (con == NULL)
@@ -58,17 +68,35 @@ int main()
 	// 체온, 산소 포화도, 이름
 	vector<tuple<double, double, string>> Patient;
 
-	Patient.push_back(make_tuple(39.2, 85.7, "Yeong Ran Lee"));
-	Patient.push_back(make_tuple(36.5, 95, "Yoo Jina"));
-	Patient.push_back(make_tuple(38, 75, "Soo Yang Kang"));
-	Patient.push_back(make_tuple(36.8, 91, "Ji Woong Kang"));
-	Patient.push_back(make_tuple(37.8, 70, "Joong ho Lee"));
+	// DB 연동해서 환자 데이터 가져옴
+	Patient.push_back(make_tuple(39.2, 85.7, "이영란"));
+	output << "39.2 " << "85.7 " << "이영란 " << "19시 30분 " << "가톨릭대학교_부천 " << "위험 " << "부평 " << "010-1111-1111 " << "안지홍" << endl;
+	Patient.push_back(make_tuple(36.5, 95, "유지나"));
+	output << "36.5 " << "95 " << "유지나 " << "11시 41분 " << "성균관대학교_강북삼성 " << "정상 " << "수유" << "010-2222-2222 " << "이유진" << endl;;
+	Patient.push_back(make_tuple(38, 75, "강수양"));
+	output << "38 " << "75 " << "강수양 " << "09시 26분 " << "울산대학교_서울아산 " << "주의 " << "잠실 " << "010-3333-3333 " << "임채윤" << endl;
+	Patient.push_back(make_tuple(36.8, 91, "강지웅"));
+	output << "36.8 " << "91 " << "강지웅 " << "15시 57분 " << "한림대학교_동탄성심 " << "정상 " << "수원 " << "010-5555-5555 " << "박성준" << endl;
+	Patient.push_back(make_tuple(37.8, 70, "이중호"));
+	output << "37.8 " << "70 " << "이중호 " << "19시 35분 " << "한양대학교_구리 " << "주의 " << "구리 " << "010-6666-6666 " << "김정재" << endl;
+
+	output.close();
 
 	sort(Patient.begin(), Patient.end(), sortdesc);
 
+	// 체온 출력
 	for (int loopP = 0; loopP < Patient.size(); loopP++)
 	{
 		cout << get<0>(Patient[loopP]) << ' ';
+	}
+	
+	cout << endl;
+	cout << endl;
+	
+
+	while (input.getline(line, 100))
+	{
+		cout << line << endl;
 	}
 
 	cout << endl;
@@ -78,9 +106,11 @@ int main()
 	mysql_free_result(result);
 
 	mysql_close(con);
+	
+	input.close();
 
 	exit(0);
-
+	return 0;
 }
 
 void finish_with_error(MYSQL* con)
@@ -109,3 +139,5 @@ bool sortdesc(const tuple<double, double, string>& P1,
 {
 	return (get<0>(P1) > get<0>(P2));
 }
+
+
